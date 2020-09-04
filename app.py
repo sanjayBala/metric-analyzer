@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify, make_response
-from main import json_parser
+from main.json_parser import print_json, testParser
 
 # init flask app
 app = Flask(__name__)
