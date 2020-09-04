@@ -37,10 +37,12 @@ def testParser(json_object):
                     }
                 ]
             }
-            aggregated_json = json.load('./data/aggregation.json')
-            aggregated_json.update(deploy_point)
-            #json.dumps(deploy_point)
-            print_json(deploy_point)
+            with open('./data/aggregation.json') as file:
+                print("Aggregating data...")
+                aggregated_json = json.load(file)
+                aggregated_json.update(deploy_point)
+                #json.dumps(deploy_point)
+                print_json(deploy_point)
             print("#####################################################################")
         else:
             print("#####################################################################")

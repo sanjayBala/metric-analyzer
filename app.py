@@ -17,9 +17,10 @@ def not_found(error):
 @app.route('/api/v1/deploy/list', methods=['GET'])
 def listDeployPoints():
     print("")
-    aggregated_json = json.load('./data/aggregation.json')
-    print_json(aggregated_json)
-    return jsonify(aggregated_json)
+    with open('./data/aggregation.json') as file:
+        aggregated_json = json.load(file)
+        print_json(aggregated_json)
+        return jsonify(aggregated_json)
 
 @app.route('/api/v1/deploy', methods=['POST'])
 def deploy():
