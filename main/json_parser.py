@@ -9,7 +9,7 @@ def testParser(json_object):
         if json_object['check_suite']['conclusion']=='success':
             check_suite_id = str(json_object['check_suite']['id'])
             print("#####################################################################")
-            print("INFO ID#" + check_suite_id + ": This looks like a valid deployment | Deployment Time: " + str(json_object['check_suite']['updated_at']))
+            print("INFO CI-ID#" + check_suite_id + ": This looks like a valid deployment | Deployment Time: " + str(json_object['check_suite']['updated_at']))
             print("#####################################################################")
         else:
             print("#####################################################################")
