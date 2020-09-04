@@ -23,4 +23,4 @@ def deploy():
         print("##DEBUG")
 
 if __name__ == '__main__':
-    app.run(port=8080)
+    app.run(host='sanjay-connector-app.herokuapp.com', port=8080)
