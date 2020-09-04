@@ -14,8 +14,9 @@ def not_found(error):
 
 @app.route('/api/v1/deploy', methods=['POST'])
 def deploy():
-    if not request.json or not 'title' in request.json:
-        print("Something is wrong here")
+    if not request.json:
+        print(request.json)
+        print("Are you sure you passed a json ?")
         return
     else:
         print("##DEBUG")
