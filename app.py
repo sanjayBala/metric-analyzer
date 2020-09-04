@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, jsonify, make_response
+import main.json_parser
 
 # init flask app
 app = Flask(__name__)
@@ -15,14 +16,12 @@ def not_found(error):
 @app.route('/api/v1/deploy', methods=['POST'])
 def deploy():
     if not request.json:
-        print(request.json)
-        print("Are you sure you passed a json ?")
-        return "ERROR: Are you sure you passed a json ?"
+        print_json(request.json)
+        print("ERROR: Hmm, Are you sure you passed a json ?")
+        return "ERROR: Hmm, Are you sure you passed a json ?"
     else:
-        print("##DEBUG")
-        print(request.json)
-        print("##DEBUG")
-        return "Okay"
+        testParser(request.json)
+        return "Okay, cool!"
 
 if __name__ == '__main__':
     app.run()
