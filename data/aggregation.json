@@ -1,0 +1,12 @@
+{
+    "connectorId": "CDK", 
+    "connectorType": "cloudockit", 
+    "connectorVersion": "1.0.0", 
+    "content": [
+    ], 
+    "description": "Deployment Metric", 
+    "lxVersion": "1.0.0", 
+    "lxWorkspace": "workspace-id", 
+    "processingDirection": "inbound", 
+    "processingMode": "partial"
+}

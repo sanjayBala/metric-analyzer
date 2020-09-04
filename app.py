@@ -16,8 +16,8 @@ def not_found(error):
 
 @app.route('/api/v1/deploy/list', methods=['GET'])
 def listDeployPoints():
-    print("")
     with open('./data/aggregation.json') as file:
+        print("Printing aggregated json...")
         aggregated_json = json.load(file)
         print_json(aggregated_json)
         return jsonify(aggregated_json)

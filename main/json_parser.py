@@ -17,16 +17,6 @@ def testParser(json_object):
             print("#####################################################################")
             print("INFO CI-ID#" + check_suite_id + ": This looks like a valid deployment | Deployment Time: " + timestamp)
             deploy_point = {
-                "connectorType": "cloudockit",
-                "connectorId": "CDK",
-                "connectorVersion": "1.0.0",
-                "lxVersion": "1.0.0",
-                "lxWorkspace": "workspace-id",
-                "description": "Deployment Metric",
-                "processingDirection": "inbound",
-                "processingMode": "partial",
-                "content": [
-                    {
                         "type": "DeployPoint",
                         "id": repo_name,
                         "data": {
@@ -35,14 +25,15 @@ def testParser(json_object):
                             "ciPipelineId": check_suite_id
                         }
                     }
-                ]
-            }
-            with open('./data/aggregation.json') as file:
+            print_json(deploy_point)
+            with open('./data/aggregation.json', 'r+') as file:
                 print("Aggregating data...")
                 aggregated_json = json.load(file)
-                aggregated_json.update(deploy_point)
+                file.seek(0)
+                aggregated_json['content'].append(deploy_point)
+                json.dump(aggregated_json, file, indent=2, sort_keys=True)         
+                print("Done...")       
                 #json.dumps(deploy_point)
-                print_json(deploy_point)
             print("#####################################################################")
         else:
             print("#####################################################################")
