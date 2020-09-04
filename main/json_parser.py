@@ -10,8 +10,8 @@ def testParser(json_object):
             # repo metadata
             repo_name = str(json_object['repository']['name'])
             # CI metadata
-            check_suite_id = str(check_suite['id'])
             check_suite = str(json_object['check_suite'])
+            check_suite_id = str(check_suite['id'])
             timestamp = str(json_object['check_suite']['updated_at'])
             conclusion = str(json_object['check_suite']['conclusion'])
             print("#####################################################################")
