@@ -17,11 +17,12 @@ def deploy():
     if not request.json:
         print(request.json)
         print("Are you sure you passed a json ?")
-        return
+        return "ERROR: Are you sure you passed a json ?"
     else:
         print("##DEBUG")
         print(request.json)
         print("##DEBUG")
+        return "Okay"
 
 if __name__ == '__main__':
     app.run()
