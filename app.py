@@ -13,6 +13,13 @@ def home():
 def not_found(error):
     return make_response(jsonify({'error': 'Not found'}), 404)
 
+@app.route('/api/v1/deploy/list', methods=['GET'])
+def listDeployPoints():
+    print("")
+    aggregated_json = json.load('./data/aggregation.json')
+    print_json(aggregated_json)
+    return jsonify(aggregated_json)
+
 @app.route('/api/v1/deploy', methods=['POST'])
 def deploy():
     if not request.json:
