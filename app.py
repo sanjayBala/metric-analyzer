@@ -12,7 +12,7 @@ def home():
 def not_found(error):
     return make_response(jsonify({'error': 'Not found'}), 404)
 
-@app.route('/api/v1/deploy/', methods=['GET'])
+@app.route('/api/v1/deploy', methods=['POST'])
 def deploy():
     if not request.json or not 'title' in request.json:
         print("Something is wrong here")
