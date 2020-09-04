@@ -16,6 +16,9 @@ def not_found(error):
 
 @app.route('/api/v1/deploy/list', methods=['GET'])
 def listDeployPoints():
+    """
+        displays the aggregated json
+    """
     with open('./data/aggregation.json') as file:
         print("Printing aggregated json...")
         aggregated_json = json.load(file)
@@ -24,6 +27,9 @@ def listDeployPoints():
 
 @app.route('/api/v1/deploy', methods=['POST'])
 def deploy():
+    """
+        parses the json POST request
+    """
     if not request.json:
         print_json(request.json)
         print("ERROR: Hmm, Are you sure you passed a json ?")
