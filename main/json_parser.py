@@ -1,5 +1,5 @@
-import psycopg2, os, json, urlparse
-
+import psycopg2, os, json
+import urllib.parse as urlparse
 def connectDB():
     try:
         print("Trying to make a connection to the DB...")
