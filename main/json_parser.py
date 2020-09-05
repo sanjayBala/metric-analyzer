@@ -1,9 +1,24 @@
-import psycopg2, os, json
+import psycopg2, os, json, urlparse
 
 def connectDB():
-    DATABASE_URI = os.environ.get('DATABASE_URL')
-    conn = psycopg2.connect(dsn=DATABASE_URI)
-    return conn
+    try:
+        print("Trying to make a connection to the DB...")
+        DATABASE_URI = os.environ.get('DATABASE_URL')
+        result = urlparse(DATABASE_URI)
+        username = result.username
+        password = result.password
+        database = result.path[1:]
+        hostname = result.hostname
+        conn = psycopg2.connect(
+            database = database,
+            user = username,
+            password = password,
+            host = hostname
+        )
+        #conn = psycopg2.connect(dsn=DATABASE_URI)
+        return conn
+    except:
+        print("Seems like DB connection failed...")
 
 def insertDeployPoint(repo_name, check_suite_id, timestamp, conclusion):
     try:
