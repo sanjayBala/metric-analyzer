@@ -18,7 +18,8 @@ def insertDeployPoint(repo_name, check_suite_id, timestamp, conclusion):
     try:
         print("Trying to add row...")
         sql_query = "INSERT INTO metric_deployment(repository_name, pipeline_id, pipeline_timestamp, pipeline_status) values (%s, %s, %s, %s);"
-        data = (repo_name, check_suite_id, timestamp, conclusion=='success')
+        status = conclusion=='success'
+        data = (repo_name, check_suite_id, timestamp, status)
         cursor.execute(sql_query, data)
         conn.commit()
         print("Inserted!")
