@@ -45,7 +45,7 @@ def retriveDeployPoints():
             "type": "DeployPoint",
             "id": entry[0],
             "data": {
-                "status": entry[3],
+                "isSuccess": entry[3],
                 "timestamp": entry[2],
                 "ciPipelineId": entry[1]
             }
