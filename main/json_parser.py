@@ -1,4 +1,53 @@
-import json
+import psycopg2, os, json
+
+def connectDB():
+    DATABASE_URI = os.environ.get('DATABASE_URI')
+    conn = psycopg2.connect(dsn=DATABASE_URI)
+    return conn
+
+def insertDeployPoint(repo_name, check_suite_id, timestamp, conclusion):
+    try:
+        conn = connectDB()
+        cursor = conn.cursor()
+        sql = "INSERT INTO metric_deployment(repository_name, pipeline_id, pipeline_timestamp, pipeline_status) values (%s);"
+        cursor.execute(sql, (repo_name, check_suite_id, timestamp, conclusion=='success'))
+        conn.commit()
+        print("Inserted!")
+    except:
+        print("Insert Failed!")
+    finally:
+        cursor.close()
+        conn.close()
+
+def retriveDeployPoints():
+    LDIF = {
+        "connectorType": "cloudockit",
+        "connectorId": "CDK",
+        "connectorVersion": "1.0.0",
+        "lxVersion": "1.0.0",
+        "lxWorkspace": "workspace-id",
+        "description": "Deployment Metric",
+        "processingDirection": "inbound",
+        "processingMode": "partial",
+        "content": []
+    }
+    sql_query = "SELECT repository_name, pipeline_id, pipeline_timestamp, pipeline_status FROM metric_deployment;"
+    conn = connectDB()
+    cursor = conn.cursor()
+    cursor.execute(sql_query)
+    deploy_records = cursor.fetchall()
+    for entry in deploy_records:
+        deploy_point = {
+            "type": "DeployPoint",
+            "id": entry[0],
+            "data": {
+                "status": entry[3],
+                "timestamp": entry[2],
+                "ciPipelineId": entry[1]
+            }
+        }
+        LDIF['content'].append(deploy_point)
+    return LDIF
 
 def print_json(json_object):
     """
@@ -35,6 +84,7 @@ def testParser(json_object):
                     }
             print_json(deploy_point)
             # aggregating that into a file for now
+            insertDeployPoint(repo_name, check_suite, timestamp, conclusion)
             with open('./data/aggregation.json', 'r+') as file:
                 print("Aggregating data...")
                 aggregated_json = json.load(file)
