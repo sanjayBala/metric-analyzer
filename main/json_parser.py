@@ -1,10 +1,11 @@
 import psycopg2, os, json
 import urllib.parse as urlparse
+
 def connectDB():
     try:
         print("Trying to make a connection to the DB...")
         DATABASE_URI = os.environ.get('DATABASE_URL')
-        result = urlparse(DATABASE_URI)
+        result = urlparse.parse(DATABASE_URI)
         username = result.username
         password = result.password
         database = result.path[1:]
