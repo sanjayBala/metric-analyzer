@@ -22,8 +22,9 @@ def insertDeployPoint(repo_name, check_suite_id, timestamp, conclusion):
         cursor.execute(sql_query, data)
         conn.commit()
         print("Inserted!")
-    except:
-        print("Insert Failed!")
+    except Exception as error:
+        print ("Oops! An exception has occured:", error)
+        print ("Exception TYPE:", type(error))
     finally:
         cursor.close()
         conn.close()
