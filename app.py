@@ -1,6 +1,6 @@
+import json
 from flask import Flask, render_template, request, jsonify, make_response
 from main.json_parser import print_json, testParser
-import json
 
 # init flask app
 app = Flask(__name__)
@@ -8,7 +8,7 @@ app.config['DEBUG'] = True
 
 @app.route('/')
 def home():
-    return "Hello, I am the metric connector. Try a POST to /api/v1/deploy"
+    return "Hello, I am the metric connector. Try a POST to /api/v1/deploy or GET to /api/v1/deploy/list"
 
 @app.errorhandler(404)
 def not_found(error):
