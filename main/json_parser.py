@@ -7,8 +7,9 @@ def connectDB():
         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
         print("Connected to the DB...")
         return conn
-    except:
-        print("Seems like DB connection failed...")
+    except Exception as error:
+        print ("Oops! An exception has occured:", error)
+        print ("Exception TYPE:", type(error))
         return
 
 def insertDeployPoint(repo_name, check_suite_id, timestamp, conclusion):
