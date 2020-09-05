@@ -13,7 +13,7 @@ def insertDeployPoint(repo_name, check_suite_id, timestamp, conclusion):
     conn = connectDB()
     cursor = conn.cursor()
     try:
-        sql = "INSERT INTO metric_deployment(repository_name, pipeline_id, pipeline_timestamp, pipeline_status) values (?);"
+        sql = "INSERT INTO metric_deployment(repository_name, pipeline_id, pipeline_timestamp, pipeline_status) values (?, ?, ?, ?);"
         cursor.execute(sql, (repo_name, check_suite_id, timestamp, conclusion=='success'))
         conn.commit()
         print("Inserted!")
