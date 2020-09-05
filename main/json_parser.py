@@ -15,9 +15,10 @@ def insertDeployPoint(repo_name, check_suite_id, timestamp, conclusion):
     conn = connectDB()
     cursor = conn.cursor()
     try:
-        #sql = "INSERT INTO metric_deployment(repository_name, pipeline_id, pipeline_timestamp, pipeline_status) values (%s, %s, %s, %s);"
-        cursor.execute("INSERT INTO metric_deployment(repository_name, pipeline_id, pipeline_timestamp, pipeline_status) VALUES(%s, %s, %s, %s);", 
-            (repo_name, check_suite_id, timestamp, conclusion=='success'))
+        print("Trying to add row...")
+        sql_query = "INSERT INTO metric_deployment(repository_name, pipeline_id, pipeline_timestamp, pipeline_status) values (%s, %s, %s, %s);"
+        data = (repo_name, check_suite_id, timestamp, conclusion=='success')
+        cursor.execute(sql_query, data)
         conn.commit()
         print("Inserted!")
     except:
@@ -92,15 +93,15 @@ def testParser(json_object):
             print_json(deploy_point)
             # aggregating that into a file for now
             insertDeployPoint(repo_name, check_suite, timestamp, conclusion)
-            with open('./data/aggregation.json', 'r+') as file:
-                print("Aggregating data...")
-                aggregated_json = json.load(file)
-                file.seek(0)
-                # appending the deploy point to the content array
-                aggregated_json['content'].append(deploy_point)
-                # sorting keys to maintain order
-                json.dump(aggregated_json, file, indent=2, sort_keys=True)         
-                print("Done...")       
+            # with open('./data/aggregation.json', 'r+') as file:
+            #     print("Aggregating data...")
+            #     aggregated_json = json.load(file)
+            #     file.seek(0)
+            #     # appending the deploy point to the content array
+            #     aggregated_json['content'].append(deploy_point)
+            #     # sorting keys to maintain order
+            #     json.dump(aggregated_json, file, indent=2, sort_keys=True)         
+            #     print("Done...")       
             print("#####################################################################")
         else:
             print("#####################################################################")
