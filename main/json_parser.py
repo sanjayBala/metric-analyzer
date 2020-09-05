@@ -8,8 +8,8 @@ def print_json(json_object):
 
 def testParser(json_object):
     # checking if it really is a check_suite json object
-    if  'check_suite' in json_object and json_object['action']=='completed':
-        if json_object['check_suite']['conclusion']=='success':
+    if 'check_suite' in json_object and json_object['action'] == 'completed':
+        if json_object['check_suite']['conclusion'] == 'success':
             # repo metadata
             repo_name = str(json_object['repository']['name'])
             # CI metadata
@@ -18,7 +18,7 @@ def testParser(json_object):
             timestamp = str(json_object['check_suite']['updated_at'])
             conclusion = str(json_object['check_suite']['conclusion'])
             print("#####################################################################")
-            print("INFO CI-ID#" + check_suite_id + ": This looks like a valid deployment | Deployment Time: " + timestamp)
+            print("INFO CI-ID#" + check_suite_id + ": This looks like a valid deployment | Deployment Timestamp: " + timestamp)
             # aggregating the POST requests into data points
             deploy_point = {
                         "type": "DeployPoint",
