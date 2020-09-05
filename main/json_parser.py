@@ -5,16 +5,19 @@ def connectDB():
         print("Trying to make a connection to the DB...")
         DATABASE_URL = os.environ['DATABASE_URL']
         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+        print("Connected to the DB...")
         return conn
     except:
         print("Seems like DB connection failed...")
+        return
 
 def insertDeployPoint(repo_name, check_suite_id, timestamp, conclusion):
     conn = connectDB()
     cursor = conn.cursor()
     try:
-        sql = "INSERT INTO metric_deployment(repository_name, pipeline_id, pipeline_timestamp, pipeline_status) values (%s, %s, %s, %s);"
-        cursor.execute(sql, (repo_name, check_suite_id, timestamp, conclusion=='success'))
+        #sql = "INSERT INTO metric_deployment(repository_name, pipeline_id, pipeline_timestamp, pipeline_status) values (%s, %s, %s, %s);"
+        cursor.execute("INSERT INTO metric_deployment(repository_name, pipeline_id, pipeline_timestamp, pipeline_status) VALUES(%s, %s, %s, %s);", 
+            (repo_name, check_suite_id, timestamp, conclusion=='success'))
         conn.commit()
         print("Inserted!")
     except:
