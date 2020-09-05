@@ -1,24 +1,10 @@
 import psycopg2, os, json
-#import urllib.parse as urlparse
 
 def connectDB():
     try:
         print("Trying to make a connection to the DB...")
         DATABASE_URL = os.environ['DATABASE_URL']
         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
-        # DATABASE_URI = os.environ.get('DATABASE_URL')
-        # result = urlparse.parse(DATABASE_URI)
-        # username = result.username
-        # password = result.password
-        # database = result.path[1:]
-        # hostname = result.hostname
-        # conn = psycopg2.connect(
-        #     database = database,
-        #     user = username,
-        #     password = password,
-        #     host = hostname
-        # )
-        #conn = psycopg2.connect(dsn=DATABASE_URI)
         return conn
     except:
         print("Seems like DB connection failed...")
@@ -27,7 +13,7 @@ def insertDeployPoint(repo_name, check_suite_id, timestamp, conclusion):
     conn = connectDB()
     cursor = conn.cursor()
     try:
-        sql = "INSERT INTO metric_deployment(repository_name, pipeline_id, pipeline_timestamp, pipeline_status) values (%s);"
+        sql = "INSERT INTO metric_deployment(repository_name, pipeline_id, pipeline_timestamp, pipeline_status) values (%s, %s, %s, %s);"
         cursor.execute(sql, (repo_name, check_suite_id, timestamp, conclusion=='success'))
         conn.commit()
         print("Inserted!")
