@@ -1,7 +1,7 @@
 import psycopg2, os, json
 
 def connectDB():
-    DATABASE_URI = os.environ.get('DATABASE_URI')
+    DATABASE_URI = os.environ.get('DATABASE_URL')
     conn = psycopg2.connect(dsn=DATABASE_URI)
     return conn
 
