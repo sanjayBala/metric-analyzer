@@ -7,6 +7,10 @@ def print_json(json_object):
     print(json.dumps(json_object, indent=2)) 
 
 def testParser(json_object):
+    """
+        takes in a github webhook json, 
+        parses it and does a bit of metadata processing
+    """
     # checking if it really is a check_suite json object
     if 'check_suite' in json_object and json_object['action'] == 'completed':
         if json_object['check_suite']['conclusion'] == 'success':
@@ -15,8 +19,8 @@ def testParser(json_object):
             # CI metadata
             check_suite = json_object['check_suite']
             check_suite_id = str(check_suite['id'])
-            timestamp = str(json_object['check_suite']['updated_at'])
-            conclusion = str(json_object['check_suite']['conclusion'])
+            timestamp = str(check_suite['updated_at'])
+            conclusion = str(check_suite['conclusion'])
             print("#####################################################################")
             print("INFO CI-ID#" + check_suite_id + ": This looks like a valid deployment | Deployment Timestamp: " + timestamp)
             # aggregating the POST requests into data points
@@ -35,11 +39,11 @@ def testParser(json_object):
                 print("Aggregating data...")
                 aggregated_json = json.load(file)
                 file.seek(0)
+                # appending the deploy point to the content array
                 aggregated_json['content'].append(deploy_point)
                 # sorting keys to maintain order
                 json.dump(aggregated_json, file, indent=2, sort_keys=True)         
                 print("Done...")       
-                #json.dumps(deploy_point)
             print("#####################################################################")
         else:
             print("#####################################################################")
