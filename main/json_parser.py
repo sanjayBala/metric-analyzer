@@ -20,6 +20,9 @@ def insertDeployPoint(repo_name, check_suite_id, timestamp, conclusion):
         sql_query = "INSERT INTO metric_deployment(repository_name, pipeline_id, pipeline_timestamp, pipeline_status) values (%s, %s, %s, %s);"
         status = conclusion=='success'
         data = (repo_name, check_suite_id, timestamp, status)
+        print("##DEGBUG")
+        for i in data:
+            print(type(data)+ ":" + i)
         cursor.execute(sql_query, data)
         conn.commit()
         print("Inserted!")
@@ -78,7 +81,7 @@ def testParser(json_object):
             repo_name = str(json_object['repository']['name'])
             # CI metadata
             check_suite = json_object['check_suite']
-            check_suite_id = str(check_suite['id'])
+            check_suite_id = int(check_suite['id'])
             timestamp = str(check_suite['updated_at'])
             conclusion = str(check_suite['conclusion'])
             print("#####################################################################")
