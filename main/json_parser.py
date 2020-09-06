@@ -1,5 +1,11 @@
 import psycopg2, os, json
 
+def print_json(json_object):
+    """
+        pretty printing json
+    """
+    print(json.dumps(json_object, indent=2, sort_keys=True)) 
+
 def connectDB():
     try:
         print("Trying to make a connection to the DB...")
@@ -12,13 +18,12 @@ def connectDB():
         print ("Exception TYPE:", type(error))
         return
 
-def insertDeployPoint(repo_name, check_suite_id, timestamp, conclusion):
+def insertDeployPoint(repo_name, check_suite_id, timestamp, status):
     conn = connectDB()
     cursor = conn.cursor()
     try:
         print("Trying to add row...")
         sql_query = "INSERT INTO metric_deployment(repository_name, pipeline_id, pipeline_timestamp, pipeline_status) values (%s, %s, %s, %s);"
-        status = conclusion=='success'
         data = (repo_name, int(check_suite_id), timestamp, status)
         print("##DEGBUG")
         for i in data:
@@ -63,12 +68,6 @@ def retriveDeployPoints():
         LDIF['content'].append(deploy_point)
     return LDIF
 
-def print_json(json_object):
-    """
-        pretty printing json
-    """
-    print(json.dumps(json_object, indent=2)) 
-
 def testParser(json_object):
     """
         takes in a github webhook json, 
@@ -83,7 +82,7 @@ def testParser(json_object):
             check_suite = json_object['check_suite']
             check_suite_id = str(check_suite['id'])
             timestamp = str(check_suite['updated_at'])
-            conclusion = str(check_suite['conclusion'])
+            conclusion = check_suite['conclusion']=='success'
             print("#####################################################################")
             print("INFO CI-ID#" + check_suite_id + ": This looks like a valid deployment | Deployment Timestamp: " + timestamp)
             # aggregating the POST requests into data points
@@ -91,23 +90,14 @@ def testParser(json_object):
                         "type": "DeployPoint",
                         "id": repo_name,
                         "data": {
-                            "status": conclusion,
+                            "isSuccess": conclusion,
                             "timestamp": timestamp,
                             "ciPipelineId": check_suite_id
                         }
                     }
             print_json(deploy_point)
             # aggregating that into a file for now
-            insertDeployPoint(repo_name, check_suite_id, timestamp, conclusion)
-            # with open('./data/aggregation.json', 'r+') as file:
-            #     print("Aggregating data...")
-            #     aggregated_json = json.load(file)
-            #     file.seek(0)
-            #     # appending the deploy point to the content array
-            #     aggregated_json['content'].append(deploy_point)
-            #     # sorting keys to maintain order
-            #     json.dump(aggregated_json, file, indent=2, sort_keys=True)         
-            #     print("Done...")       
+            insertDeployPoint(repo_name, check_suite_id, timestamp, conclusion)      
             print("#####################################################################")
         else:
             print("#####################################################################")
