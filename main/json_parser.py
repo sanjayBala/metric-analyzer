@@ -22,7 +22,7 @@ def insertDeployPoint(repo_name, check_suite_id, timestamp, conclusion):
         data = (repo_name, check_suite_id, timestamp, status)
         print("##DEGBUG")
         for i in data:
-            print(type(data)+ ":" + i)
+            print(str(type(i))+ ":" + str(i))
         cursor.execute(sql_query, data)
         conn.commit()
         print("Inserted!")
