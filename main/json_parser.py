@@ -85,7 +85,7 @@ def testParser(json_object):
             timestamp = str(check_suite['updated_at'])
             conclusion = str(check_suite['conclusion'])
             print("#####################################################################")
-            print("INFO CI-ID#" + check_suite_id + ": This looks like a valid deployment | Deployment Timestamp: " + timestamp)
+            print("INFO CI-ID#" + str(check_suite_id) + ": This looks like a valid deployment | Deployment Timestamp: " + timestamp)
             # aggregating the POST requests into data points
             deploy_point = {
                         "type": "DeployPoint",
