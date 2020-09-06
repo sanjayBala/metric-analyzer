@@ -19,7 +19,7 @@ def insertDeployPoint(repo_name, check_suite_id, timestamp, conclusion):
         print("Trying to add row...")
         sql_query = "INSERT INTO metric_deployment(repository_name, pipeline_id, pipeline_timestamp, pipeline_status) values (%s, %s, %s, %s);"
         status = conclusion=='success'
-        data = (repo_name, check_suite_id, timestamp, status)
+        data = (repo_name, int(check_suite_id), timestamp, status)
         print("##DEGBUG")
         for i in data:
             print(str(type(i))+ ":" + str(i))
@@ -81,11 +81,11 @@ def testParser(json_object):
             repo_name = str(json_object['repository']['name'])
             # CI metadata
             check_suite = json_object['check_suite']
-            check_suite_id = int(check_suite['id'])
+            check_suite_id = str(check_suite['id'])
             timestamp = str(check_suite['updated_at'])
             conclusion = str(check_suite['conclusion'])
             print("#####################################################################")
-            print("INFO CI-ID#" + str(check_suite_id) + ": This looks like a valid deployment | Deployment Timestamp: " + timestamp)
+            print("INFO CI-ID#" + check_suite_id + ": This looks like a valid deployment | Deployment Timestamp: " + timestamp)
             # aggregating the POST requests into data points
             deploy_point = {
                         "type": "DeployPoint",
@@ -98,7 +98,7 @@ def testParser(json_object):
                     }
             print_json(deploy_point)
             # aggregating that into a file for now
-            insertDeployPoint(repo_name, check_suite, timestamp, conclusion)
+            insertDeployPoint(repo_name, check_suite_id, timestamp, conclusion)
             # with open('./data/aggregation.json', 'r+') as file:
             #     print("Aggregating data...")
             #     aggregated_json = json.load(file)
