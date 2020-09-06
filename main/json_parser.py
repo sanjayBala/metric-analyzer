@@ -77,7 +77,7 @@ def testParser(json_object):
     if 'check_suite' in json_object and json_object['action'] == 'completed':
         if json_object['check_suite']['conclusion'] == 'success':
             # repo metadata
-            repo_name = str(json_object['repository']['name'])
+            repo_name = str(json_object['repository']['name']).strip()
             # CI metadata
             check_suite = json_object['check_suite']
             check_suite_id = str(check_suite['id'])
